@@ -16,7 +16,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         drawCircularLoader()
-        updateTimer = NSTimer.scheduledTimerWithTimeInterval(0.05, target: self, selector: "updateProgress", userInfo: nil, repeats: true)
+        updateTimer = NSTimer.scheduledTimerWithTimeInterval(0.01, target: self, selector: "updateProgress", userInfo: nil, repeats: true)
     }
 
     override func didReceiveMemoryWarning() {
@@ -65,44 +65,48 @@ class ViewController: UIViewController {
             return circlePathLayer.strokeEnd
         }
         set {
-            if (newValue > 1) {
-                circlePathLayer.strokeEnd = 1
-            } else if (newValue < 0) {
-                circlePathLayer.strokeEnd = 0
-            } else {
+//            if (newValue > 1) {
+//                circlePathLayer.strokeEnd = 1
+//            } else if (newValue < 0) {
+//                circlePathLayer.strokeEnd = 0
+//            } else {
                 circlePathLayer.strokeEnd = newValue
-            }
+            circlePathLayer.strokeStart = newValue - 0.25
+//            }
         }
     }
     
     var i = 0
     
     func updateProgress() {
-        progress += 0.025
-        print(progress)
+        progress += 0.01
+//        print(circlePathLayer.strokeEnd)
 //        if ++i == 10 {
 //            switchColors()
 //            i = 0
 //        }
+        if progress == 1 {
+            
+        }
         
-        if progress == 1.0 {
-//            progress = 0
+        if progress > 1.1 {
+            progress = 1
             switchColors()
             updateTimer.invalidate()
             
-            updateTimer = NSTimer.scheduledTimerWithTimeInterval(0.05, target: self, selector: "reverseProgress", userInfo: nil, repeats: true)
+            updateTimer = NSTimer.scheduledTimerWithTimeInterval(0.01, target: self, selector: "reverseProgress", userInfo: nil, repeats: true)
         }
     }
     
     func reverseProgress() {
-        progress -= 0.025
+        progress -= 0.01
         
-        if progress == 0.0 {
-            //            progress = 0
+        if progress < -0.1 {
+            progress = 0
             switchColors()
             updateTimer.invalidate()
             
-            updateTimer = NSTimer.scheduledTimerWithTimeInterval(0.05, target: self, selector: "updateProgress", userInfo: nil, repeats: true)
+            updateTimer = NSTimer.scheduledTimerWithTimeInterval(0.01, target: self, selector: "updateProgress", userInfo: nil, repeats: true)
         }
     }
     
